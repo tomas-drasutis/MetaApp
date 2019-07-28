@@ -1,6 +1,7 @@
 ﻿using Metaapp.DataLayer.Provider;
 using Metaapp.DataLayer.Storage;
 using Metaapp.Models;
+using Metaapp.UI;
 using Metaapp.Utilities;
 using System;
 using System.Collections.Generic;
@@ -43,11 +44,11 @@ namespace Metaapp.Controllers
                         continue;
                     }
 
-                    weather = _provider.GetCityWeather(cityName);                    
+                    weather = _provider.GetCityWeather(cityName);
                     weather.TimeStamp = DateTime.Now;
-                                       
+
                     weatherList.Add(weather);
-                    _logger.Log($"Got object: { weather.City}, {weather.Temperature}, { weather.Precipation}, {weather.Weather}, {weather.TimeStamp.TimeOfDay}");
+                    _logger.Log($"Received object: { weather.City}, {weather.Temperature}, { weather.Precipation}, {weather.Weather}, {weather.TimeStamp.TimeOfDay}");
                 }
 
                 _logger.Log("Saving weather data!");
@@ -57,9 +58,11 @@ namespace Metaapp.Controllers
             {
                 _logger.Log(e.Message);
             }
-
-            new Timer(x => UpdateWeather(cityNames), null, 5000, Timeout.Infinite);
-            _displayer.Display();
+            finally
+            {
+                new Timer(x => UpdateWeather(cityNames), null, 5000, Timeout.Infinite);
+                _displayer.Display();
+            }            
         }
     }
 }
