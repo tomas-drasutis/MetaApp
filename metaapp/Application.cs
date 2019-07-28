@@ -1,5 +1,5 @@
-﻿using Metaapp.Controllers;
-using Metaapp.UI;
+﻿using System;
+using Metaapp.Controllers;
 using System.Threading.Tasks;
 
 namespace Metaapp
@@ -7,17 +7,15 @@ namespace Metaapp
     public class Application : IApplication
     {
         IWeatherController _weatherController;
-        IWeatherDisplayer _weatherDisplayer;
 
-        public Application(IWeatherController weatherController, IWeatherDisplayer weatherDisplayer)
+        public Application(IWeatherController weatherController)
         {
             _weatherController = weatherController;
-            _weatherDisplayer = weatherDisplayer;
         }
 
         public void Run(string[] arguments)
         {
-            Task.Run(() => _weatherDisplayer.Display(null, null));
+            Console.Out.WriteLine("Starting application..");
             Task.Run(() => _weatherController.UpdateWeather(arguments));            
         }
     }

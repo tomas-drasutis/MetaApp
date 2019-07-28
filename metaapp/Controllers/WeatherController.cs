@@ -40,10 +40,7 @@ namespace Metaapp.Controllers
                 foreach (var cityName in cityNames)
                 {
                     if (!cities.Contains(cityName))
-                    {
-                        _logger.Log($"City {cityName} was not found in the list");
-                        continue;
-                    }
+                        throw new ArgumentException($"The given city was not found: {cityName}. Please enter valid cities.");
 
                     weather = _provider.GetCityWeather(cityName);
                     weather.TimeStamp = DateTime.Now;
@@ -55,14 +52,15 @@ namespace Metaapp.Controllers
                 _logger.Log("Saving weather data!");
                 _storage.Save<CityWeather>(weatherList);
             }
-            catch (Exception e)
+            catch (Exception ex)
             {
-                _logger.Log(e.Message);
+                _logger.Log(ex.Message);
+                Console.Out.WriteLine(ex.Message);
+                return;
             }
-            finally
-            {
-                new Timer(x => UpdateWeather(cityNames), null, 5000, Timeout.Infinite);
-            }            
+
+            new Timer(x => UpdateWeather(cityNames), null, 5000, Timeout.Infinite);
+
         }
     }
 }
