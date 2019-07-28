@@ -55,7 +55,7 @@ namespace Metaapp.Controllers
             catch (Exception ex)
             {
                 _logger.Log(ex.Message);
-                Console.Out.WriteLine(ex.Message);
+                _displayer.DisplayMessage(ex.Message);
                 return;
             }
 

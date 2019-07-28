@@ -41,5 +41,11 @@ namespace Metaapp.UI
                 _logger.Log(ex.Message);
             }
         }
+
+        public void DisplayMessage(string message)
+        {
+            Console.Out.WriteLine(message);
+        }
+
     }
 }
