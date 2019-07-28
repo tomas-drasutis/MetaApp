@@ -23,6 +23,7 @@ namespace Metaapp.Controllers
             _storage = storage;
             _provider = provider;
             _displayer = displayer;
+            _storage.DataSaved += _displayer.Display;
         }
 
         public void UpdateWeather(string[] cityNames)
@@ -61,7 +62,6 @@ namespace Metaapp.Controllers
             finally
             {
                 new Timer(x => UpdateWeather(cityNames), null, 5000, Timeout.Infinite);
-                _displayer.Display();
             }            
         }
     }

@@ -1,10 +1,7 @@
 ﻿using Autofac;
 using Metaapp.Controllers;
-using System;
-using System.Collections.Generic;
 using System.Reflection;
 using System.Linq;
-using System.Text;
 using Metaapp.UI;
 
 namespace Metaapp
@@ -16,8 +13,8 @@ namespace Metaapp
             var builder = new ContainerBuilder();
 
             builder.RegisterType<Application>().As<IApplication>();
-            builder.RegisterType<WeatherController>().As<IWeatherController>();
             builder.RegisterType<WeatherDisplayer>().As<IWeatherDisplayer>();
+            builder.RegisterType<WeatherController>().As<IWeatherController>();            
 
             builder.RegisterAssemblyTypes(Assembly.Load(nameof(Metaapp)))
                 .Where(t => t.Namespace.Contains("DataLayer"))

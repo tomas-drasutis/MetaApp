@@ -5,7 +5,7 @@ using System.Text;
 
 namespace Metaapp.Utilities
 {
-    class Logger : ILogger
+    public class Logger : ILogger
     {
         public void Log(string message)
         {

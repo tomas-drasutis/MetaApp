@@ -3,14 +3,13 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Text;
-using System.Xml.Serialization;
 
 namespace Metaapp.DataLayer.Storage
 {
-    class Storage : IStorage
+    public class Storage : IStorage
     {
         private string _filePath = "FileName.txt";
+        public event EventHandler DataSaved;
 
         private readonly JsonSerializer _serializer = new JsonSerializer
         {
@@ -23,6 +22,7 @@ namespace Metaapp.DataLayer.Storage
             {
                 _serializer.Serialize(writer, obj);
             }
+            OnDataSaved();
         }
 
         public IEnumerable<T> Read<T>()
@@ -38,5 +38,14 @@ namespace Metaapp.DataLayer.Storage
             using (var jsonReader = new JsonTextReader(reader))
                 return _serializer.Deserialize<IEnumerable<T>>(jsonReader);
         }
+
+        protected virtual void OnDataSaved()
+        {
+            EventHandler handler = DataSaved;
+
+            if (handler != null)
+                handler(this, EventArgs.Empty);
+        }
+
     }
 }

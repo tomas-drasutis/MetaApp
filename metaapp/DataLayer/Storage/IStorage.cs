@@ -3,8 +3,9 @@ using System.Collections.Generic;
 
 namespace Metaapp.DataLayer.Storage
 {
-    interface IStorage
+    public interface IStorage
     {
+        event EventHandler DataSaved;
         void Save<T>(IEnumerable<T> obj);
         IEnumerable<T> Read<T>();
     }

@@ -1,7 +1,9 @@
-﻿namespace Metaapp.UI
+﻿using System;
+
+namespace Metaapp.UI
 {
-    interface IWeatherDisplayer
+    public interface IWeatherDisplayer
     {
-        void Display();
+        void Display(object sender, EventArgs args);
     }
 }
