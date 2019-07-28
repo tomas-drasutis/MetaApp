@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "Metaapp": {
+      "commandName": "Project",
+      "commandLineArgs": "Tirana Yerevan Vienna Baku Minsk Brussels Sarajevo Sofia Zagreb Nicosia Prague Copenhagen Tallinn Helsinki Paris Tbilisi Berlin Athens Vilnius Ryga"
+    }
+  }
+}
