@@ -1,4 +1,4 @@
-﻿namespace Metaapp
+﻿namespace Metaapp.UI
 {
     interface IWeatherDisplayer
     {

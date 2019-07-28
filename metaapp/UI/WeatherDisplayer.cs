@@ -5,7 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace Metaapp
+namespace Metaapp.UI
 {
     class WeatherDisplayer : IWeatherDisplayer
     {
@@ -20,11 +20,11 @@ namespace Metaapp
 
         public void Display()
         {
-            Console.Clear();
-
             _logger.Log("Printing weather information.");
+            Console.Clear();
             Console.WriteLine("{0,15}|{1,15}|{2,15}|{3,15}|{4,20}", "City ", "Temperature ", "Precipation ", "Weather ", "Timestamp ");
             Console.Out.WriteLine("----------------------------------------------------------------------------------------");
+
             try
             {
                 foreach (var item in _storage.Read<CityWeather>())
@@ -36,10 +36,11 @@ namespace Metaapp
                         $"{item.TimeStamp.TimeOfDay,20}");
                 }
             }
-            catch (Exception e)
+            catch (Exception ex)
             {
-                _logger.Log(e.Message);
-            }            
+                _logger.Log(ex.Message);
+            }
+
         }
     }
 }
