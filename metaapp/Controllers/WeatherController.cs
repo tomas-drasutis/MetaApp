@@ -28,11 +28,14 @@ namespace Metaapp.Controllers
 
         public void UpdateWeather(string[] cityNames)
         {
-            List<CityWeather> weatherList = new List<CityWeather>();
-            CityWeather weather;
-
             try
             {
+                if(cityNames.Length == 0)
+                    throw new ArgumentException("Please provide startup arguments.");
+
+                List<CityWeather> weatherList = new List<CityWeather>();
+                CityWeather weather;
+
                 _logger.Log("Fetching the list of cities!");
                 string cities = _provider.GetCities();
 
