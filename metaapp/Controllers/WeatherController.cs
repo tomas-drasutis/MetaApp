@@ -62,7 +62,7 @@ namespace Metaapp.Controllers
                 return;
             }
 
-            new Timer(x => UpdateWeather(cityNames), null, 5000, Timeout.Infinite);
+            new Timer(x => UpdateWeather(cityNames), null, 30000, Timeout.Infinite);
         }
     }
 }
