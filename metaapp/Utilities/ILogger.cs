@@ -1,6 +1,6 @@
 ﻿namespace Metaapp.Utilities
 {
-    interface ILogger
+    public interface ILogger
     {
         void Log(string message);
     }

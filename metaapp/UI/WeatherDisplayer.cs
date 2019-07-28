@@ -7,7 +7,7 @@ using System.Text;
 
 namespace Metaapp.UI
 {
-    class WeatherDisplayer : IWeatherDisplayer
+    public class WeatherDisplayer : IWeatherDisplayer
     {
         ILogger _logger;
         IStorage _storage;
@@ -18,7 +18,7 @@ namespace Metaapp.UI
             _storage = storage;
         }
 
-        public void Display()
+        public void Display(object sender, EventArgs args)
         {
             _logger.Log("Printing weather information.");
             Console.Clear();
@@ -40,7 +40,12 @@ namespace Metaapp.UI
             {
                 _logger.Log(ex.Message);
             }
-
         }
+
+        public void DisplayMessage(string message)
+        {
+            Console.Out.WriteLine(message);
+        }
+
     }
 }
