@@ -1,24 +1,25 @@
 ﻿using Metaapp.Controllers;
 using Metaapp.UI;
+using Metaapp.Utilities;
 using System.Threading.Tasks;
 
 namespace Metaapp
 {
     public class Application : IApplication
     {
-        IWeatherController _weatherController;
-        IWeatherDisplayer _weatherDisplayer;
+        ITrigger _trigger;
+        IWeatherDisplayer _displayer;
 
-        public Application(IWeatherController weatherController, IWeatherDisplayer weatherDisplayer)
+        public Application(ITrigger trigger, IWeatherDisplayer displayer)
         {
-            _weatherController = weatherController;
-            _weatherDisplayer = weatherDisplayer;
+            _trigger = trigger;
+            _displayer = displayer;
         }
 
         public void Run(string[] arguments)
         {
-            Task.Run(() => _weatherDisplayer.DisplayMessage("Starting application..."));
-            Task.Run(() => _weatherController.UpdateWeather(arguments));            
+            _displayer.DisplayMessage("Starting application..");
+           Task.Run(() =>_trigger.StartUpdate(arguments));
         }
     }
 }
