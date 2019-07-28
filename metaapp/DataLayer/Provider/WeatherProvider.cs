@@ -18,7 +18,9 @@ namespace Metaapp.DataLayer.Provider
 
         public CityWeather GetCityWeather(string cityName)
         {
-            return _client.Execute<CityWeather>(new RestRequest(_baseUrl + $"Weather/{cityName}")).Data;
+            var weather = _client.Execute<CityWeather>(new RestRequest(_baseUrl + $"Weather/{cityName}")).Data;
+            weather.TimeStamp = DateTime.Now;
+            return weather;
         }
     }
 }

@@ -5,8 +5,9 @@ using Metaapp.UI;
 using Metaapp.Utilities;
 using System;
 using System.Collections.Generic;
-using System.Text;
+using System.Linq;
 using System.Threading;
+using System.Threading.Tasks;
 
 namespace Metaapp.Controllers
 {
@@ -26,7 +27,7 @@ namespace Metaapp.Controllers
             _storage.DataSaved += _displayer.Display;
         }
 
-        public void UpdateWeather(string[] cityNames)
+        public async void UpdateWeather(string[] cityNames)
         {
             try
             {
@@ -34,7 +35,7 @@ namespace Metaapp.Controllers
                     throw new ArgumentException("Please provide startup arguments.");
 
                 List<CityWeather> weatherList = new List<CityWeather>();
-                CityWeather weather;
+                List<Task<CityWeather>> taskList = new List<Task<CityWeather>>();
 
                 _logger.Log("Fetching the list of cities!");
                 string cities = _provider.GetCities();
@@ -45,12 +46,11 @@ namespace Metaapp.Controllers
                     if (!cities.Contains(cityName))
                         throw new ArgumentException($"The given city was not found: {cityName}. Please enter valid cities.");
 
-                    weather = _provider.GetCityWeather(cityName);
-                    weather.TimeStamp = DateTime.Now;
-
-                    weatherList.Add(weather);
-                    _logger.Log($"Received object: { weather.City}, {weather.Temperature}, { weather.Precipation}, {weather.Weather}, {weather.TimeStamp.TimeOfDay}");
+                    taskList.Add(Task.Run(() => _provider.GetCityWeather(cityName)));
                 }
+
+                weatherList = (await Task.WhenAll(taskList.ToArray())).OrderBy(x => x.City).ToList();
+                _logger.Log($"Fetched information for {weatherList.Count()} cities.");
 
                 _logger.Log("Saving weather data!");
                 _storage.Save<CityWeather>(weatherList);
@@ -63,7 +63,6 @@ namespace Metaapp.Controllers
             }
 
             new Timer(x => UpdateWeather(cityNames), null, 5000, Timeout.Infinite);
-
         }
     }
 }
