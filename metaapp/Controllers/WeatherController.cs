@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace Metaapp.Controllers
 {
-    class WeatherController : IWeatherController
+    public class WeatherController : IWeatherController
     {
         ILogger _logger;
         IStorage _storage;
@@ -27,42 +27,31 @@ namespace Metaapp.Controllers
             _storage.DataSaved += _displayer.Display;
         }
 
-        public async void UpdateWeather(string[] cityNames)
+        public async Task UpdateWeather(string[] cityNames)
         {
-            try
+            if (cityNames.Length == 0)
+                throw new ArgumentException("Please provide startup arguments.");
+
+            List<CityWeather> weatherList = new List<CityWeather>();
+            List<Task<CityWeather>> taskList = new List<Task<CityWeather>>();
+
+            _logger.Log("Fetching the list of cities!");
+            string cities = _provider.GetCities();
+
+            _logger.Log("Fetching weather data!");
+            foreach (var cityName in cityNames)
             {
-                if(cityNames.Length == 0)
-                    throw new ArgumentException("Please provide startup arguments.");
+                if (!cities.Contains(cityName))
+                    throw new ArgumentException($"The given city was not found: {cityName}. Please enter valid cities.");
 
-                List<CityWeather> weatherList = new List<CityWeather>();
-                List<Task<CityWeather>> taskList = new List<Task<CityWeather>>();
-
-                _logger.Log("Fetching the list of cities!");
-                string cities = _provider.GetCities();
-
-                _logger.Log("Fetching weather data!");
-                foreach (var cityName in cityNames)
-                {
-                    if (!cities.Contains(cityName))
-                        throw new ArgumentException($"The given city was not found: {cityName}. Please enter valid cities.");
-
-                    taskList.Add(Task.Run(() => _provider.GetCityWeather(cityName)));
-                }
-
-                weatherList = (await Task.WhenAll(taskList.ToArray())).OrderBy(x => x.City).ToList();
-                _logger.Log($"Fetched information for {weatherList.Count()} cities.");
-
-                _logger.Log("Saving weather data!");
-                _storage.Save<CityWeather>(weatherList);
-            }
-            catch (Exception ex)
-            {
-                _logger.Log(ex.Message);
-                _displayer.DisplayMessage(ex.Message);
-                return;
+                taskList.Add(Task.Run(() => _provider.GetCityWeather(cityName)));
             }
 
-            new Timer(x => UpdateWeather(cityNames), null, 30000, Timeout.Infinite);
+            weatherList = (await Task.WhenAll(taskList.ToArray())).OrderBy(x => x.City).ToList();
+            _logger.Log($"Fetched information for {weatherList.Count()} cities.");
+
+            _logger.Log("Saving weather data!");
+            _storage.Save<CityWeather>(weatherList);
         }
     }
 }

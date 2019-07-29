@@ -1,7 +1,9 @@
-﻿namespace Metaapp.Controllers
+﻿using System.Threading.Tasks;
+
+namespace Metaapp.Controllers
 {
     public interface IWeatherController
     {
-        void UpdateWeather(string[] cityNames);
+        Task UpdateWeather(string[] cityNames);
     }
 }

@@ -2,7 +2,7 @@
 
 namespace Metaapp.DataLayer.Provider
 {
-    interface IWeatherProvider
+    public interface IWeatherProvider
     {
         string GetCities();
         CityWeather GetCityWeather(string cityName);
