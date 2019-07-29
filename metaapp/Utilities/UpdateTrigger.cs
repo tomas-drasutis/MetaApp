@@ -8,14 +8,13 @@ using System.Threading.Tasks;
 
 namespace Metaapp.Utilities
 {
-    public class Trigger : ITrigger
+    public class UpdateTrigger : IUpdateTrigger
     {
-
         IWeatherController _weatherController;
         IWeatherDisplayer _weatherDisplayer;
         ILogger _logger;
 
-        public Trigger(IWeatherController weatherController, IWeatherDisplayer weatherDisplayer, ILogger logger)
+        public UpdateTrigger(IWeatherController weatherController, IWeatherDisplayer weatherDisplayer, ILogger logger)
         {
             _weatherController = weatherController;
             _weatherDisplayer = weatherDisplayer;
@@ -32,10 +31,7 @@ namespace Metaapp.Utilities
             {
                 _logger.Log(ex.Message);
                 _weatherDisplayer.DisplayMessage(ex.Message);
-                return;
             }
-
-            new Timer(x => StartUpdate(cityNames), null, 5000, Timeout.Infinite);
         }
     }
 }

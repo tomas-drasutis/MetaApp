@@ -1,6 +1,6 @@
 ﻿namespace Metaapp.Utilities
 {
-    public interface ITrigger
+    public interface IUpdateTrigger
     {
         void StartUpdate(string[] cityNames);
     }

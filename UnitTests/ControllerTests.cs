@@ -91,6 +91,36 @@ namespace Tests
             }
         }
 
+        [Test]
+        public async Task UpdateWeather_Succeeds()
+            {
+            using (var mock = AutoMock.GetLoose())
+                {
+                mock.Mock<IWeatherProvider>()
+                    .Setup(x => x.GetCities())
+                    .Returns("Vilnius");
+
+                mock.Mock<IWeatherProvider>()
+                    .Setup(x => x.GetCityWeather("Vilnius"))
+                    .Returns(GetSampleWeather()[0]);
+
+                mock.Mock<IStorage>()
+                    .Setup(x => x.Save(GetSampleWeather()));
+
+                mock.Mock<IWeatherDisplayer>()
+                    .Setup(x => x.DisplayMessage("one"));
+
+                mock.Mock<ILogger>()
+                    .Setup(x => x.Log("log"));
+
+                var cls = mock.Create<WeatherController>();
+
+                await cls.UpdateWeather(new string[] { "Vilnius" });
+                Assert.Fail("Did not throw Argument Exception when inappropriate cities were passed.");
+
+                }
+            }
+
         private List<CityWeather> GetSampleWeather()
         {
             List<CityWeather> output = new List<CityWeather>
