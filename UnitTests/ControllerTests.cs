@@ -1,6 +1,5 @@
 using Metaapp.Controllers;
 using NUnit.Framework;
-using Moq;
 using Metaapp.Utilities;
 using Metaapp.UI;
 using Metaapp.DataLayer.Storage;
@@ -15,12 +14,6 @@ namespace Tests
 {
     public class ControllerTests
     {
-
-        [SetUp]
-        public void Init()
-        {
-        }
-
         [Test]
         public async Task UpdateWeather_NoParameters_ThrowsExceptionAsync()
         {
@@ -115,9 +108,14 @@ namespace Tests
 
                 var cls = mock.Create<WeatherController>();
 
-                await cls.UpdateWeather(new string[] { "Vilnius" });
-                Assert.Fail("Did not throw Argument Exception when inappropriate cities were passed.");
-
+                try
+                    {
+                    await cls.UpdateWeather(new string[] { "Vilnius" });
+                    }
+                catch (Exception ex)
+                    {
+                    Assert.Fail("Threw an exception when it should not have.");                    
+                    }
                 }
             }
 
