@@ -1,8 +1,9 @@
 ﻿using System;
 using System.Timers;
 using System.Threading.Tasks;
+using Metaapp.Utilities;
 
-namespace Metaapp.Utilities
+namespace Metaapp
     {
     public class TimerTrigger
         {
