@@ -22,7 +22,7 @@ namespace Metaapp
             {
             _displayer.DisplayMessage("Starting application..");
             Task.Run(() => _trigger.StartUpdate(arguments));
-            new TimerTrigger(_trigger, 5000, arguments);
+            new TimerTrigger(_trigger, 30000, arguments);
             }
         }
     }
